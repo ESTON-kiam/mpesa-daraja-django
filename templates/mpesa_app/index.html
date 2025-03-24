@@ -1,0 +1,49 @@
+{% extends 'mpesa_app/base.html' %}
+
+{% block content %}
+    <section class="payment-form">
+        <h2>Make a Payment</h2>
+        <form action="{% url 'process_payment' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="phone_number">Phone Number:</label>
+                <input type="text" id="phone_number" name="phone_number" placeholder="e.g., 254712345678" required>
+            </div>
+            <div class="form-group">
+                <label for="amount">Amount (KSH):</label>
+                <input type="number" id="amount" name="amount" min="1" placeholder="Enter amount" required>
+            </div>
+            <button type="submit" class="btn-primary">Pay Now</button>
+        </form>
+    </section>
+
+    <section class="transactions">
+        <h2>Recent Transactions</h2>
+        {% if recent_payments %}
+            <table class="transaction-table">
+                <thead>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>Phone Number</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment in recent_payments %}
+                        <tr>
+                            <td>{{ payment.transaction_id }}</td>
+                            <td>{{ payment.phone_number }}</td>
+                            <td>KSH {{ payment.amount }}</td>
+                            <td>{{ payment.transaction_date|date:"d-m-Y H:i" }}</td>
+                            <td class="status-{{ payment.status }}">{{ payment.get_status_display }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="no-transactions">No transactions yet.</p>
+        {% endif %}
+    </section>
+{% endblock %}
