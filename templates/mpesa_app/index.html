@@ -3,7 +3,7 @@
 {% block content %}
     <section class="payment-form">
         <h2>Make a Payment</h2>
-        <form action="{% url 'process_payment' %}" method="post">
+        <form action="{% url 'stk' %}" method="post">
             {% csrf_token %}
             <div class="form-group">
                 <label for="phone_number">Phone Number:</label>

@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 def StkPushView(request):
     if request.method == "POST":
             # Extract validated data
-            phone_number = request.POST['number']
+            phone_number = request.POST['phone_number']
             amount = request.POST['amount']
 
             # Get access token
