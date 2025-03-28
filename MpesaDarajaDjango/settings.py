@@ -17,7 +17,7 @@ ALLOWED_HOSTS = []
 MPESA_ENVIRONMENT = 'sandbox'
 MPESA_CONSUMER_KEY = 'F1tuXfV73l8AUIXUVEdvQsRE7OJsRdg9kz22y67vCEG1TCul'
 MPESA_CONSUMER_SECRET = 'agskGrWUs4A9NwazyA6bRhk9fCUm5wDmGfoPA9RQjA5biDaOJckGIAAIkJPFH0uU'
-MPESA_SHORTCODE = '174379'
+MPESA_SHORTCODE = 174379
 MPESA_PASSKEY = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919'
 MPESA_CALLBACK_URL = 'https://your-ngrok-url.ngrok-free.app/mpesa-callback/'
 
@@ -29,7 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mpesa.apps.MpesaConfig',
-
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

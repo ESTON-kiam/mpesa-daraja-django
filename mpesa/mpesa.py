@@ -9,34 +9,36 @@ from .credentials import MpesaAccessToken, LipanaMpesaPpassword
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 import logging
+from django.conf import settings
+from django.shortcuts import render, redirect
 
 logger = logging.getLogger(__name__)
 
-# @csrf_exempt
+@csrf_exempt
 def StkPushView(request):
     if request.method == "POST":
             # Extract validated data
-            phone_number = request.POST['phone_number']
+            phone_number = request.POST['number']
             amount = request.POST['amount']
 
             # Get access token
             access_token = MpesaAccessToken.validated_mpesa_access_token()
+            print(access_token)
             api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
             headers = {"Authorization": f"Bearer {access_token}"}
-
             # Prepare request data
             request_data = {
                 "BusinessShortCode": LipanaMpesaPpassword.Business_short_code,
                 "Password": LipanaMpesaPpassword().decode_password,
                 "Timestamp": LipanaMpesaPpassword.get_lipa_time(),
                 "TransactionType": "CustomerPayBillOnline",
-                "Amount": amount,
-                "PartyA": phone_number,
+                "Amount": int(amount),
+                "PartyA": int(phone_number),
                 "PartyB": LipanaMpesaPpassword.Business_short_code,
-                "PhoneNumber": phone_number,
-                "CallBackURL": "https://9333-41-209-60-94.ngrok-free.app/api/campaign_callback",
-                "AccountReference": "",
-                "TransactionDesc": ""
+                "PhoneNumber": int(phone_number),
+                "CallBackURL": settings.MPESA_CALLBACK_URL,
+                "AccountReference": "Reference",
+                "TransactionDesc": "Reference"
             }
 
             # Make STK Push request
@@ -45,12 +47,12 @@ def StkPushView(request):
 
             # Handle response
             if response_data.get('ResponseCode') == '0':
-                return Response({'message': 'STK Push initiated successfully', 'data': response_data}, status=status.HTTP_200_OK)
+                return JsonResponse({'message': 'STK Push initiated successfully', 'data': response_data}, status=status.HTTP_200_OK)
             else:
-                return Response({'message': 'STK Push failed', 'data': response_data}, status=status.HTTP_400_BAD_REQUEST)
+                return JsonResponse({'message': 'STK Push failed', 'data': response_data}, status=status.HTTP_400_BAD_REQUEST)
 
         # If data is invalid
-    return Response(status=status.HTTP_400_BAD_REQUEST)
+    return render(request, 'index.html')
 
 
 # @method_decorator(csrf_exempt, name='dispatch')

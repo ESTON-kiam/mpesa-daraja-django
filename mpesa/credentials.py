@@ -5,15 +5,15 @@ from requests.auth import HTTPBasicAuth
 import datetime
 from dotenv import load_dotenv
 import os
-
+from django.conf import settings
 load_dotenv()
 
 class MpesaAccessToken:
     @staticmethod
     def get_access_token():
         # Daraja Sandbox credentials
-        consumer_key = ''
-        consumer_secret = ''
+        consumer_key = settings.MPESA_CONSUMER_KEY
+        consumer_secret = settings.MPESA_CONSUMER_SECRET
         api_url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
         response = requests.get(api_url, auth=HTTPBasicAuth(consumer_key, consumer_secret))
         json_response = response.json()
@@ -25,8 +25,8 @@ class MpesaAccessToken:
 
 class LipanaMpesaPpassword:
     # Daraja Sandbox credentials
-    Business_short_code = 174379
-    Shortcode_password = ''
+    Business_short_code = '174379'
+    Shortcode_password = settings.MPESA_PASSKEY
 
     @staticmethod
     def get_lipa_time():
