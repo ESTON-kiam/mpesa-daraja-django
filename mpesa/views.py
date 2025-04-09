@@ -5,7 +5,6 @@ from .models import MpesaPayment
 from django.contrib import messages
 import uuid
 
-
 def index(request):
     """
     Display the payment form and recent payments
@@ -16,7 +15,6 @@ def index(request):
         'recent_payments': recent_payments
     }
     return render(request, 'mpesa_app/index.html', context)
-
 
 @csrf_exempt
 def process_payment(request):
@@ -42,7 +40,6 @@ def process_payment(request):
         return redirect('index')
 
     return redirect('index')
-
 
 @csrf_exempt
 def mpesa_callback(request):

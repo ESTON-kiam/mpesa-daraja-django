@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils import timezone
 
-
 class MpesaPayment(models.Model):
     """Model for M-Pesa payment transactions"""
     STATUS_CHOICES = (
